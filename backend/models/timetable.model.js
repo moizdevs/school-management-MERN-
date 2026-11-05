@@ -52,7 +52,7 @@ timetableSchema.index({
     class: 1,
     section: 1,
     day: 1,
-    peroidNumber: 1
+    periodNumber: 1
 }, { unique: true })
 
 export const Timetable = mongoose.models.Timetable || mongoose.model("Timetable", timetableSchema);

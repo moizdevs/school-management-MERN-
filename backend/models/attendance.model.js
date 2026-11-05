@@ -35,8 +35,8 @@ const attendanceSchema = new mongoose.Schema({
         type: String
     },
     attendanceDate: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: new Date().toISOString().split("T")[0]
     }
 }, { timestamps: true });
 
