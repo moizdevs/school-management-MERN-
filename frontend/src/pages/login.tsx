@@ -14,7 +14,7 @@ export function AuthLayout({ title, subtitle, children }: { title: string; subti
         <div aria-hidden className="absolute inset-0 bg-[radial-gradient(60%_50%_at_20%_0%,rgb(31_122_102/0.55),transparent),radial-gradient(40%_40%_at_90%_100%,rgb(224_185_104/0.18),transparent)]" />
         <div aria-hidden className="absolute inset-0 opacity-[0.07] bg-[linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)]" />
         <div className="relative flex items-center gap-2.5">
-          <img src="/logo.png" alt="School Management System Logo" className="w-24 h-20 invert" />
+          <img src="/logo.png" alt="School Management System Logo" className="w-44 h-40 invert" />
         </div>
         <div className="relative max-w-md animate-rise">
           <p className="font-display text-6xl leading-[0.95] tracking-tight text-balance">
