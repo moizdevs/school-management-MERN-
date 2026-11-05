@@ -6,7 +6,7 @@ import { createSubject, getAllSubjects, updateSubject, deleteSubject } from "../
 const router = express.Router();
 
 router.post("/create", protect, authorizeRole("admin"), createSubject);
-router.get("/get", protect, authorizeRole("admin"), getAllSubjects);
+router.get("/get", protect, authorizeRole("admin","teacher"), getAllSubjects);
 router.put("/:id", protect, authorizeRole("admin"), updateSubject);
 router.delete("/:id", protect, authorizeRole("admin"), deleteSubject);
 

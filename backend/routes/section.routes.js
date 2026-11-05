@@ -6,7 +6,7 @@ import { createSection, deleteSection, getSectionsByClass, updateSection } from 
 const router = express.Router();
 
 router.post("/create", protect,authorizeRole("admin"),createSection);
-router.get("/:classId", protect,authorizeRole("admin"),getSectionsByClass);
+router.get("/:classId", protect,authorizeRole("admin","teacher"),getSectionsByClass);
 router.put("/:id", protect,authorizeRole("admin"),updateSection);
 router.delete("/:id", protect,authorizeRole("admin"),deleteSection);
 

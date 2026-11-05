@@ -6,7 +6,7 @@ import { createClass, deleteClass, getAllClasses, updateClass } from "../control
 const router = express.Router();
 
 router.post("/create", protect,authorizeRole("admin"),createClass);
-router.get("/get", protect,authorizeRole("admin"),getAllClasses);
+router.get("/get", protect,authorizeRole("admin","teacher"),getAllClasses);
 router.put("/:id", protect,authorizeRole("admin"),updateClass);
 router.delete("/:id", protect,authorizeRole("admin"),deleteClass);
 

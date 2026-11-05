@@ -7,7 +7,7 @@ const router = express.Router();
 
 // Student Routes  
 router.post("/student", protect, authorizeRole("admin"), createStudent);
-router.get("/students", protect, authorizeRole("admin"), getAllStudents);
+router.get("/students", protect, authorizeRole("admin", "teacher"), getAllStudents);
 router.put("/student/:id", protect, authorizeRole("admin"), updateStudent);
 router.delete("/student/:id", protect, authorizeRole("admin"), deleteStudent);
 

@@ -56,6 +56,7 @@ export const createAssignment = async (req, res) => {
             assignment
         })
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             success: false,
             message: error.message
