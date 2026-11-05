@@ -69,7 +69,7 @@ export const getStudentResults = async (req,res) => {
         const results = await Result.find({student: req.params.studentId}).populate("exam");
 
         res.status(200).json({
-            success: false,
+            success: true,
             count: results.length,
             results
         })

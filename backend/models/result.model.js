@@ -15,7 +15,7 @@ const resultSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    precentage: {
+    percentage: {
         type: Number
     },
     grade: {

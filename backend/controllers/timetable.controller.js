@@ -123,7 +123,7 @@ export const getClassTimetable = async (req, res) => {
             })
             .sort({
                 day: 1,
-                peroidNumber: 1,
+                periodNumber: 1,
             });
 
         res.status(200).json({
@@ -166,7 +166,7 @@ export const getStudentTimetable = async (req, res) => {
             })
             .sort({
                 day: 1,
-                peroidNumber: 1,
+                periodNumber: 1,
             });
 
         res.status(200).json({
@@ -202,7 +202,7 @@ export const getTeacherTimetable = async (req, res) => {
             section: teacherProfile.sectionId
         }).populate("subject").populate("class").populate("section").sort({
             day: 1,
-            peroidNumber: 1
+            periodNumber: 1
         });
 
         res.status(200).json({

@@ -21,7 +21,7 @@ export const submitAssignment = async (req, res) => {
         }
 
         // Check Assignment 
-        const assignment = await Assignment.finById(assignmentId);
+        const assignment = await Assignment.findById(assignmentId);
         if (!assignment) {
             return res.status(404).json({
                 success: false,
@@ -117,7 +117,7 @@ export const reviewSubmission = async (req,res) => {
     try {
         const { teacherRemarks, marksAwarded, status } = req.body;
 
-        const submission = AssignmentSubmission.findByIdAndUpdate(req.params.id, {
+        const submission = await AssignmentSubmission.findByIdAndUpdate(req.params.id, {
             teacherRemarks,
             marksAwarded,
             status

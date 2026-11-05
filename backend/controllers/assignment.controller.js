@@ -35,7 +35,7 @@ export const createAssignment = async (req, res) => {
             });
             attachementData = {
                 public_id: result.public_id,
-                ulr: result.secure_url
+                url: result.secure_url
             }
         }
 
@@ -58,7 +58,7 @@ export const createAssignment = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: error.messsage
+            message: error.message
         })
     }
 }

@@ -15,7 +15,7 @@ const teacherProfileSchema = new mongoose.Schema({
      salary: {
         type: Number
      },
-     subjectsSpecialization : {
+     subjectSpecialization : {
         type: String
      },
      joiningDate: {

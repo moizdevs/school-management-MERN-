@@ -59,7 +59,7 @@ export const getAllExams = async (req, res) => {
 // Delete Exam
 export const deleteExam = async (req, res) => {
     try {
-        const exam = Exam.findById(req.params.id);
+        const exam = await Exam.findById(req.params.id);
 
         if(!exam){
             return res.status(404).json({
@@ -70,7 +70,7 @@ export const deleteExam = async (req, res) => {
 
         await exam.deleteOne();
         res.status(200).json({
-            success: false,
+            success: true,
             message: "Exam deleted successfully"
         })
     } catch (error) {
