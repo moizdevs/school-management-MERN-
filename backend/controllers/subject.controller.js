@@ -70,7 +70,7 @@ export const createSubject = async (req, res) => {
 // Get All Subjects
 export const getAllSubjects = async (req, res) => {
     try {
-        const subjects = await Subject.find().populate("class").teacher({
+        const subjects = await Subject.find().populate("class").populate({
             path: "teacher",
             populate: {
                 path: "user"

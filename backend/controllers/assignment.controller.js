@@ -66,9 +66,9 @@ export const createAssignment = async (req, res) => {
 // Get All Assignments
 export const getAllAssignments = async (req, res) => {
     try {
-        const assignments = await Assignment.find().pouplate("subject").pouplate("class").pouplate("section").pouplate({
+        const assignments = await Assignment.find().populate("subject").populate("class").populate("section").populate({
             path: "teacher",
-            pupulate: {
+            populate: {
                 path: "user"
             }
         })
@@ -79,6 +79,8 @@ export const getAllAssignments = async (req, res) => {
             assignments
         })
     } catch (error) {
+        console.log(error);
+        
         res.status(500).json({
             success: false,
             message: error.messsage
@@ -103,9 +105,9 @@ export const getStudentAssignments = async (req, res) => {
         const assignments = await Assignment.find({
             class: studentProfile.class,
             section: studentProfile.section
-        }).pouplate("subject").pouplate({
+        }).populate("subject").populate({
             path: "teacher",
-            poulate: {
+            populate: {
                 path: "user"
             }
         });

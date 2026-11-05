@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@import "@fontsource-variable/geist";
+@import "@fontsource/instrument-serif";
+
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+
+  /* Paper + ink, with a deep pine accent and a brass highlight */
+  --color-paper: #f6f5f1;
+  --color-surface: #fbfaf7;
+  --color-ink: #14171a;
+  --color-pine-50: #eef6f3;
+  --color-pine-100: #d4e8e1;
+  --color-pine-500: #1f7a66;
+  --color-pine-600: #17604f;
+  --color-pine-700: #124c3f;
+  --color-pine-900: #0c2a24;
+  --color-pine-950: #081b17;
+  --color-brass-300: #ecd29b;
+  --color-brass-400: #e0b968;
+  --color-brass-600: #a67a22;
+
+  --shadow-card: 0 0 0 1px rgb(20 23 26 / 0.06), 0 1px 2px rgb(20 23 26 / 0.04), 0 12px 32px -12px rgb(20 23 26 / 0.10);
+  --shadow-pop: 0 0 0 1px rgb(20 23 26 / 0.08), 0 4px 12px rgb(20 23 26 / 0.06), 0 32px 64px -16px rgb(20 23 26 / 0.28);
+  --shadow-press: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 0 0 1px rgb(8 27 23 / 0.9), 0 1px 2px rgb(8 27 23 / 0.3), 0 6px 14px -6px rgb(8 27 23 / 0.5);
+
+  --ease-spring: cubic-bezier(0.22, 1.2, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-rise: rise 0.55s var(--ease-out-expo) both;
+  --animate-pop-in: pop-in 0.32s var(--ease-spring) both;
+  --animate-overlay: fade 0.2s ease-out both;
+  --animate-sheet: sheet 0.4s var(--ease-out-expo) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes pop-in { from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes sheet { from { transform: translateX(-100%); } to { transform: none; } }
+  @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+}
+
+:root { color-scheme: light; }
+
+@layer base {
+  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body { @apply bg-paper font-sans text-ink; font-feature-settings: "ss01", "cv11"; }
+  ::selection { background: var(--color-brass-300); }
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+}
+
+/* Stagger helper: <li style="--i: 3" class="stagger"> */
+.stagger { animation: var(--animate-rise); animation-delay: calc(var(--i, 0) * 45ms); }
+@media (prefers-reduced-motion: reduce) {
+  .stagger, [class*="animate-"] { animation: none !important; }
+}
