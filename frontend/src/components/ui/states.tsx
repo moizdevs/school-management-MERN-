@@ -29,7 +29,7 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 export const TableSkeleton = ({ rows = 6 }: { rows?: number }) => (
   <div className="divide-y divide-zinc-900/5" aria-busy aria-label="Loading">
     {Array.from({ length: rows }).map((_, i) => (
-      <div key={i} className="flex h-[60px] items-center gap-4 px-5">
+      <div key={i} className="flex h-15 items-center gap-4 px-5">
         <Skeleton className="size-9 rounded-full" />
         <Skeleton className="h-3.5 w-40" />
         <Skeleton className="ml-auto h-3.5 w-24" />

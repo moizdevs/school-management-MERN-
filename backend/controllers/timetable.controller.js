@@ -186,7 +186,7 @@ export const getStudentTimetable = async (req, res) => {
 // Get Teacher TimeTable 
 export const getTeacherTimetable = async (req, res) => {
     try {
-        const teacherProfile = await TeacherProfile.find({
+        const teacherProfile = await TeacherProfile.findOne({
             user: req.user._id,
         });
 
@@ -198,8 +198,7 @@ export const getTeacherTimetable = async (req, res) => {
         }
 
         const timetable = await Timetable.find({
-            class: teacherProfile.classId,
-            section: teacherProfile.sectionId
+            teacher: teacherProfile._id
         }).populate("subject").populate("class").populate("section").sort({
             day: 1,
             periodNumber: 1
