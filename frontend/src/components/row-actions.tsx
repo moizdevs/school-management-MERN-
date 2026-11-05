@@ -1,6 +1,6 @@
 import { Pencil, Trash2 } from "lucide-react";
 
-const btn = "grid size-11 place-items-center rounded-xl text-zinc-500 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-pine-500";
+const btn = "grid size-11 place-items-center cursor-pointer rounded-xl text-zinc-500 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-pine-500";
 
 export function RowActions({ onEdit, onDelete, label }: { onEdit?: () => void; onDelete?: () => void; label: string }) {
   return (

@@ -7,6 +7,7 @@ import helmet from "helmet"
 import { connectDB } from "./config/db.js"
 import { seedAdmin } from "./utils/adminSeeder.js"
 import authRoutes from "./routes/auth.routes.js"
+import statsRoutes from "./routes/stats.routes.js"
 import classRoutes from "./routes/class.routes.js"
 import sectionRoutes from "./routes/section.routes.js"
 import userManagementRoutes from "./routes/userManagement.routes.js"
@@ -61,7 +62,7 @@ app.use("/api/results", resultRoutes)
 app.use("/api/assignments", assignmentRoutes)
 app.use("/api/submissions", assignmentSubmissionRoutes)
 app.use("/api/timetable", timetableRoutes)
-
+app.use("/api/stats", statsRoutes)
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, ()=>{

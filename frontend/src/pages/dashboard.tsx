@@ -11,6 +11,7 @@ import { useAuth } from "@/lib/auth";
 import { useClasses, useExams, useMyProfileId, useStudents, useSubjects, useTeachers } from "@/lib/queries";
 import type { AssignmentRec, ExamRec, ResultRec } from "@/lib/types";
 import { fmtDate, pct } from "@/lib/utils";
+import OverviewStats from "@/components/ui/overviewstats";
 
 const greeting = () => { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; };
 
@@ -64,6 +65,7 @@ function AdminDash() {
         <Stat i={2} label="Classes" value={v(classes)} icon={<Layers className="size-4" />} />
         <Stat i={3} label="Subjects" value={v(subjects)} icon={<BookOpen className="size-4" />} />
       </div>
+      <OverviewStats />
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
         <UpcomingExams exams={exams.data} loading={exams.isLoading} />
         <Shortcuts items={[

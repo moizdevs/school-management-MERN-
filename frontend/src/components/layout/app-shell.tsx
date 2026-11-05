@@ -10,9 +10,7 @@ import { NAV } from "./nav";
 function Brand() {
   return (
     <div className="flex items-center gap-2.5 px-2">
-      <span className="grid size-9 place-items-center rounded-xl bg-pine-900 text-brass-300 shadow-press">
-        <svg viewBox="0 0 32 32" className="size-5" fill="currentColor" aria-hidden><path d="M16 7 5 12.5l11 5.5 11-5.5L16 7Zm-7 9.2v4.3c0 1.8 3.1 3.5 7 3.5s7-1.7 7-3.5v-4.3l-7 3.5-7-3.5Z" /></svg>
-      </span>
+        <img src="/logo.png" alt="School Management System Logo" className="w-24 h-20" />
     </div>
   );
 }
@@ -44,7 +42,7 @@ function SideNav({ onNavigate }: { onNavigate?: () => void }) {
                   >
                     {({ isActive }) => (
                       <>
-                        <it.icon className={cn("size-[18px] transition-colors", isActive ? "text-brass-300" : "text-zinc-400 group-hover:text-zinc-600")} aria-hidden />
+                        <it.icon className={cn("size-4.5 transition-colors", isActive ? "text-brass-300" : "text-zinc-400 group-hover:text-zinc-600")} aria-hidden />
                         {it.label}
                       </>
                     )}
@@ -64,7 +62,7 @@ function SideNav({ onNavigate }: { onNavigate?: () => void }) {
         <button
           onClick={() => void logout()}
           aria-label="Sign out"
-          className="grid size-11 place-items-center rounded-xl text-zinc-500 outline-none transition-colors hover:bg-zinc-900/5 hover:text-ink focus-visible:ring-2 focus-visible:ring-pine-500"
+          className="grid size-11 place-items-center cursor-pointer rounded-xl text-zinc-500 outline-none transition-colors hover:bg-zinc-900/5 hover:text-ink focus-visible:ring-2 focus-visible:ring-pine-500"
         >
           <LogOut className="size-4" />
         </button>
@@ -92,7 +90,7 @@ export function AppShell() {
             </Dialog.Trigger>
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 z-40 animate-overlay bg-pine-950/40 backdrop-blur-sm" />
-              <Dialog.Content className="fixed inset-y-0 left-0 z-50 w-[300px] max-w-[85vw] animate-sheet bg-paper shadow-pop outline-none">
+              <Dialog.Content className="fixed inset-y-0 left-0 z-50 w-75 max-w-[85vw] animate-sheet bg-paper shadow-pop outline-none">
                 <Dialog.Title className="sr-only">Navigation</Dialog.Title>
                 <Dialog.Description className="sr-only">Site sections</Dialog.Description>
                 <Dialog.Close aria-label="Close menu" className="absolute right-2 top-4 grid size-11 place-items-center rounded-xl outline-none hover:bg-zinc-900/5 focus-visible:ring-2 focus-visible:ring-pine-500"><X className="size-4" /></Dialog.Close>
