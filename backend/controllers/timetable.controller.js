@@ -142,7 +142,7 @@ export const getClassTimetable = async (req, res) => {
 // Get Student Timetable
 export const getStudentTimetable = async (req, res) => {
     try {
-        const studentProfile = await StudentProfile.find({
+        const studentProfile = await StudentProfile.findOne({
             user: req.user._id,
         });
 
@@ -154,8 +154,8 @@ export const getStudentTimetable = async (req, res) => {
         }
 
         const timetable = await Timetable.find({
-            class: studentProfile.classId,
-            section: studentProfile.sectionId,
+            class: studentProfile.class,
+            section: studentProfile.section,
         })
             .populate("subject")
             .populate({
