@@ -74,7 +74,7 @@ export const createStudent = async (req, res) => {
 // Get all students 
 export const getAllStudents = async (req, res) => {
     try {
-        const students = await StudentProfile.find().populate("user").populate("class").populate("section");
+        const students = await StudentProfile.find().populate("user","-password").populate("class").populate("section");
 
         res.status(200).json({
             success: true,
@@ -227,7 +227,7 @@ export const createTeacher = async (req, res) => {
 // Get All Teachers 
 export const getAllTeachers = async (req, res) => {
     try {
-        const teachers = await TeacherProfile.find().populate("user");
+        const teachers = await TeacherProfile.find().populate("user","-password");
 
         res.status(200).json({
             success: true,
@@ -272,7 +272,7 @@ export const updateTeacher = async (req, res) => {
             {
                 new: true
             }
-        ).populate("user");
+        ).populate("user","-password");
 
         res.status(200).json({
             success: true,
