@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DataTable, type Column } from "@/components/ui/data-table";
-import { Field, Select } from "@/components/ui/field";
+import { Input, Field, Select } from "@/components/ui/field";
 import { PageHeader, Stat } from "@/components/ui/misc";
 import { Empty } from "@/components/ui/states";
 import { api } from "@/lib/api";
@@ -116,24 +116,53 @@ function MarkAttendance() {
 function ClassRecords() {
   const [classId, setClassId] = useState("");
   const [sectionId, setSectionId] = useState("");
+  // Aaj ki local date "YYYY-MM-DD" format mein (en-CA ka format yahi hai)
+  const [date, setDate] = useState(() => new Date().toLocaleDateString("en-CA"));
+
+  const ready = !!(classId && sectionId && date);
+
   const q = useQuery({
-    queryKey: ["attendance", "class", classId],
-    enabled: !!classId,
-    queryFn: async () => (await api<{ attendance: AttendanceRec[] }>(`/attendance/class/${classId}`)).attendance,
+    queryKey: ["attendance", "class", classId, sectionId, date],
+    enabled: ready,   // teeno hon tabhi request jayegi
+    queryFn: async () => {
+      const params = new URLSearchParams({ sectionId, date });
+      const res = await api<{ attendance: AttendanceRec[] }>(
+        `/attendance/class/${classId}?${params.toString()}`,
+      );
+      return res.attendance;
+    },
   });
-  const rows = q.data?.filter((a) => !sectionId || idOf(a.section) === sectionId);
+
   const columns: Column<AttendanceRec>[] = [
     { header: "Date", cell: (a) => fmtDate(a.attendanceDate) },
     { header: "Student", cell: (a) => (typeof a.student === "string" ? a.student : a.student?.user?.name) ?? "—" },
     { header: "Subject", hideOnMobile: true, cell: (a) => a.subject?.subjectName ?? "—" },
     { header: "Status", cell: (a) => <Badge tone={tone[a.status]}>{a.status}</Badge> },
   ];
+
   return (
     <Card>
-      <Card.Content className="border-b border-zinc-900/5"><ClassPicker {...{ classId, setClassId, sectionId, setSectionId }} /></Card.Content>
-      {!classId ? <Empty icon={CalendarCheck2} title="Choose a class" body="See every attendance record taken for it." /> :
-        <DataTable rows={rows} columns={columns} rowKey={(a) => a._id} loading={q.isLoading} error={q.error?.message} onRetry={() => q.refetch()}
-          searchText={(a) => `${typeof a.student === "string" ? "" : a.student?.user?.name} ${a.subject?.subjectName}`} empty={{ title: "No records yet" }} />}
+      <Card.Content className="border-b border-zinc-900/5">
+        <ClassPicker {...{ classId, setClassId, sectionId, setSectionId }}>
+          <Field label="Date">
+            {(id) => <Input id={id} type="date" required value={date} onChange={(e) => setDate(e.target.value)} />}
+          </Field>
+        </ClassPicker>
+      </Card.Content>
+      {!ready ? (
+        <Empty icon={CalendarCheck2} title="Choose class, section and date" body="Then you'll see that day's attendance." />
+      ) : (
+        <DataTable
+          rows={q.data}
+          columns={columns}
+          rowKey={(a) => a._id}
+          loading={q.isLoading}
+          error={q.error?.message}
+          onRetry={() => q.refetch()}
+          searchText={(a) => `${typeof a.student === "string" ? "" : a.student?.user?.name} ${a.subject?.subjectName}`}
+          empty={{ title: "No records for this date" }}
+        />
+      )}
     </Card>
   );
 }

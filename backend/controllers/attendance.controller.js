@@ -70,25 +70,28 @@ export const markAttendance = async (req, res) => {
 // Get Attendance by Class
 export const getAttendanceByClass = async (req, res) => {
     try {
-        const attendance = await Attendance.find({ class: req.params.classId }).populate({
-            path: "student",
-            populate: {
-                path: "user"
-            }
-        }).populate("subject").populate("section");
+        const { sectionId, date } = req.query;
+        const filter = { class: req.params.classId };
 
-        res.status(200).json({
-            success: true,
-            count: attendance.length,
-            attendance
-        })
+        if (sectionId) filter.section = sectionId;
+        if (date) {
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+                return res.status(400).json({ success: false, message: "date must be YYYY-MM-DD" });
+            }
+            filter.attendanceDate = date;   // model mein String hai, isliye seedha match hoga
+        }
+
+        const attendance = await Attendance.find(filter)
+            .populate({ path: "student", populate: { path: "user", select: "-password" } })
+            .populate("subject")
+            .populate("section")
+            .sort({ attendanceDate: -1 });
+
+        res.status(200).json({ success: true, count: attendance.length, attendance });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        })
+        res.status(500).json({ success: false, message: error.message });
     }
-}
+};
 
 // Student Attendance Report 
 export const getStudentAttendance = async (req, res) => {
