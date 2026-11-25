@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Line, Doughnut } from "react-chartjs-2";
+import { api } from "@/lib/api";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -71,22 +72,18 @@ export default function OverviewStats() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
-
     Promise.all([
-      fetch("/api/stats/admissions", { headers }).then((r) => r.json()),
-      fetch("/api/stats/class-distribution", { headers }).then((r) => r.json()),
+      api<Point[]>("/stats/admissions"),
+      api<any[]>("/stats/class-distribution"),
     ])
       .then(([a, c]) => {
         setAdmissions(a);
         setClasses(
           Array.isArray(c)
             ? c.map((item: any) => ({
-                label: `Class ${item.name}`,
-                count: item._count?.students ?? 0,
-              }))
+              label: `Class ${item.name}`,
+              count: item._count?.students ?? 0,
+            }))
             : [],
         );
       })
@@ -271,9 +268,8 @@ export default function OverviewStats() {
           <div className="text-right">
             <div className="text-2xl font-medium text-gray-900">{current}</div>
             <div
-              className={`mt-1 text-xs font-medium ${
-                growth >= 0 ? "text-emerald-500" : "text-red-500"
-              }`}
+              className={`mt-1 text-xs font-medium ${growth >= 0 ? "text-emerald-500" : "text-red-500"
+                }`}
             >
               {growth >= 0 ? "+" : ""}
               {growth.toFixed(1)}%
