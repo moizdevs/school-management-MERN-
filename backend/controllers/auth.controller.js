@@ -6,6 +6,14 @@ import { sendEmail } from "../utils/sendEmail.js";
 import { StudentProfile } from "../models/studentProfile.model.js";
 import { TeacherProfile } from "../models/teacherProfile.model.js";
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  path: "/",
+};
+
 // Login User
 export const loginUser = async (req, res) => {
   try {
@@ -39,16 +47,11 @@ export const loginUser = async (req, res) => {
     // Generate Token
     const token = await genToken(user._id);
 
-    // Cookie Options
-    const cookieOptions = {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    };
-
     // Send Cookie
-    res.cookie("token", token, cookieOptions);
+    res.cookie("token", token, {
+      ...cookieOptions,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     res.status(200).json({
       success: true,
@@ -72,10 +75,7 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
-    res.cookie("token", "", {
-      httpOnly: true,
-      expires: new Date(0),
-    });
+    res.clearCookie("token", cookieOptions);
 
     return res.status(200).json({
       success: true,
@@ -122,7 +122,7 @@ export const forgotPassword = async (req, res) => {
     // Saving resetToken
     user.resetPasswordToken = hashedToken;
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-    user.save();
+    await user.save();
 
     // Reset Url
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
@@ -208,7 +208,7 @@ export const resetPassword = async (req, res) => {
 // Get current user
 export const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id).select("-password -resetPasswordToken -resetPasswordExpire");
     let profile = null;
     if (user.role === "student")
       profile = await StudentProfile.findOne({ user: user._id }).select("_id");
@@ -218,7 +218,7 @@ export const getMe = async (req, res) => {
     return res.status(200).json({
       success: true,
       user,
-      profile
+      profile,
     });
   } catch (error) {
     res.status(500).json({
