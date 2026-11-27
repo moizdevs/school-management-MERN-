@@ -5,55 +5,71 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 
 // Create Student
-import mongoose from "mongoose";
-
 export const createStudent = async (req, res) => {
     try {
         const {
-            name, email, password, classId, sectionId, rollNumber,
-            fatherName, motherName, phone, gender, dob, address, admissionDate,
+            name,
+            email,
+            password,
+            classId,
+            sectionId,
+            rollNumber,
+            fatherName,
+            motherName,
+            phone,
+            gender,
+            dob,
+            address,
+            admissionDate,
         } = req.body;
 
-        if (!name || !email || !password) {
-            return res.status(400).json({ success: false, message: "Name, email and password are required" });
+        // Check existing user 
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "User already exists"
+            })
         }
+        // Hash Password 
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            role: "student"
+        })
 
-        const hashedPassword = await bcrypt.hash(password, 10);   // transaction se bahar
+        // Create Student Profile
+        const studentProfile = await StudentProfile.create({
+            user: user._id,
+            class: classId,
+            section: sectionId,
+            rollNumber,
+            fatherName,
+            motherName,
+            phone,
+            gender,
+            dob,
+            address,
+            admissionDate,
+        })
 
-        let user, studentProfile;
+        res.status(201).json({
+            success: true,
+            message: "Student created successfully",
+            user,
+            studentProfile,
+        })
 
-        await mongoose.connection.transaction(async (session) => {
-            const existingUser = await User.findOne({ email }).session(session);
-            if (existingUser) {
-                const err = new Error("User already exists");
-                err.status = 400;
-                throw err;
-            }
-
-            [user] = await User.create(
-                [{ name, email, password: hashedPassword, role: "student" }],
-                { session }
-            );
-
-            [studentProfile] = await StudentProfile.create(
-                [{
-                    user: user._id, class: classId, section: sectionId,
-                    rollNumber, fatherName, motherName, phone, gender, dob, address, admissionDate,
-                }],
-                { session }
-            );
-        });
-
-        const { password: _pw, ...safeUser } = user.toObject();
-        res.status(201).json({ success: true, message: "Student created successfully", user: safeUser, studentProfile });
     } catch (error) {
-        const status = error.status || (error.code === 11000 ? 400 : 500);
-        res.status(status).json({
+        res.status(500).json({
             success: false,
-            message: error.message,
+            message: error.message
         });
     }
-};
+}
 
 // Get all students 
 export const getAllStudents = async (req, res) => {
