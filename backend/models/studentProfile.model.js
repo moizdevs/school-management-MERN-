@@ -15,7 +15,8 @@ const studentProfileSchema = new mongoose.Schema({
         ref: "Section",
     },
     rollNumber: {
-        type: String
+        type: String,
+        unique: true
     },
     fatherName: {
         type: String
