@@ -50,7 +50,7 @@ export const createStudent = async (req, res) => {
         const status = error.status || (error.code === 11000 ? 400 : 500);
         res.status(status).json({
             success: false,
-            message: error.code === 11000 ? "User already exists" : error.message,
+            message: error.message,
         });
     }
 };
